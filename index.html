@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yantra AI Labs — Proposal Pages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      padding: 28px 60px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 60px;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    h1 span { color: #e63030; text-decoration: line-through; text-decoration-thickness: 4px; }
+
+    .subtitle {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.5);
+      max-width: 500px;
+      margin-bottom: 72px;
+    }
+
+    .domains-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+    }
+
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .domain-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 36px 32px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .domain-card.active { border-color: rgba(255,255,255,0.25); }
+    .domain-card.active:hover { border-color: #fff; background: rgba(255,255,255,0.03); }
+
+    .domain-card.coming-soon {
+      opacity: 0.35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .domain-icon {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+
+    .domain-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .domain-desc {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .domain-status {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    .domain-card.active .domain-status { color: #4ade80; }
+    .domain-card.coming-soon .domain-status { color: rgba(255,255,255,0.25); }
+
+    .domain-arrow {
+      position: absolute;
+      top: 36px;
+      right: 32px;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .domain-card.active:hover .domain-arrow {
+      color: #fff;
+      transform: translate(3px, -3px);
+    }
+
+    footer {
+      padding: 28px 60px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    footer a {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      main { padding: 64px 24px; }
+      .domain-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Yantra AI Labs</a>
+  </nav>
+
+  <main>
+    <div class="eyebrow">AI Product Proposals</div>
+    <h1>Intelligence built for<br>the <span>real</span> world.</h1>
+    <p class="subtitle">Explore Yantra AI Labs' domain-specific proposals — each built on the same enterprise-grade AI platform.</p>
+
+    <div class="domains-label">Available Domains</div>
+    <div class="domain-grid">
+
+      <a href="./security/" class="domain-card active">
+        <div class="domain-icon">🔒</div>
+        <div class="domain-name">Physical Security</div>
+        <div class="domain-desc">Vision AI for surveillance, threat detection, and proactive security operations.</div>
+        <div class="domain-status">● Live</div>
+        <span class="domain-arrow">↗</span>
+      </a>
+
+      <div class="domain-card coming-soon">
+        <div class="domain-icon">🏭</div>
+        <div class="domain-name">Manufacturing</div>
+        <div class="domain-desc">AI-powered quality control, safety monitoring, and factory floor intelligence.</div>
+        <div class="domain-status">Coming Soon</div>
+      </div>
+
+      <div class="domain-card coming-soon">
+        <div class="domain-icon">🏥</div>
+        <div class="domain-name">Healthcare</div>
+        <div class="domain-desc">Intelligent patient monitoring, compliance, and operational efficiency for hospitals.</div>
+        <div class="domain-status">Coming Soon</div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Yantra AI Labs. All rights reserved.</p>
+    <a href="./security/contact.html">Contact Us →</a>
+  </footer>
+
+</body>
+</html>

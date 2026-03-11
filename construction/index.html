@@ -143,55 +143,115 @@
       max-width: 620px;
       margin-bottom: 56px;
     }
-    .hero-case-study {
-      display: flex;
-      gap: 0;
-      max-width: 820px;
-      border: 1px solid var(--border);
-      margin-bottom: 56px;
-    }
-    .case-bar {
-      width: 4px;
-      background: var(--amber);
-      flex-shrink: 0;
-    }
-    .case-body {
-      padding: 28px 32px;
-    }
-    .case-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 10px;
-    }
-    .case-text {
+    .hero-insight {
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--dark);
+      line-height: 1.75;
+      color: var(--gray);
+      max-width: 620px;
+      margin-bottom: 48px;
     }
-    .case-stats {
+    .insight-link {
+      color: var(--dark);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-size: inherit;
+      transition: color 0.15s;
+    }
+    .insight-link:hover { color: var(--amber); }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      max-width: 780px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-header {
       display: flex;
-      gap: 40px;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 28px 32px 0;
+      gap: 16px;
     }
-    .case-stat strong {
-      display: block;
+    .modal-title {
       font-family: 'Sora', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
+      font-size: 1rem;
+      font-weight: 700;
       color: var(--dark);
-      letter-spacing: -0.02em;
+      line-height: 1.4;
     }
-    .case-stat span {
-      font-size: 0.78rem;
+    .modal-close {
+      background: none;
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+      color: var(--gray);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .modal-close:hover { border-color: var(--dark); color: var(--dark); }
+    .modal-img {
+      width: 100%;
+      display: block;
+      padding: 20px 32px;
+    }
+    .modal-footer {
+      padding: 16px 32px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      gap: 16px;
+    }
+    .modal-caption {
+      font-size: 11px;
       color: var(--gray-dim);
-      letter-spacing: 0.04em;
+      line-height: 1.5;
     }
+    .modal-source {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: border-color 0.15s;
+    }
+    .modal-source:hover { border-color: var(--dark); }
+    @media (max-width: 600px) {
+      .modal-header { padding: 20px 20px 0; }
+      .modal-img { padding: 16px 20px; }
+      .modal-footer { flex-direction: column; align-items: flex-start; padding: 16px 20px 24px; }
+    }
+
     .hero-cta {
       display: inline-block;
       padding: 16px 40px;
@@ -708,31 +768,29 @@
       A site officer who spots risks before they become incidents. A project head who reviews 12 live sites without leaving his desk. A CEO whose entire portfolio is visible in one dashboard — not next week's report. This is what AI integration delivers: a 10× leap in how construction organisations sense, decide, and act.
     </p>
 
-    <div class="hero-case-study">
-      <div class="case-bar"></div>
-      <div class="case-body">
-        <div class="case-label">Real-World Case Study — Infrastructure Sector</div>
-        <p class="case-text">
-          A leading Indian infrastructure conglomerate deployed Vision AI across 12 active construction sites — monitoring safety compliance, equipment utilisation, and project progress in real time. Within six months, management had near-instant visibility into every site without expanding the safety team.
-        </p>
-        <div class="case-stats">
-          <div class="case-stat">
-            <strong>41%</strong>
-            <span>Reduction in safety violations</span>
-          </div>
-          <div class="case-stat">
-            <strong>65%</strong>
-            <span>Faster daily reporting</span>
-          </div>
-          <div class="case-stat">
-            <strong>3.2×</strong>
-            <span>ROI in first year</span>
-          </div>
+    <p class="hero-insight">
+      Over 60% of current jobs in Sales, Architecture &amp; Engineering, Legal, and Office &amp; Admin can be autonomously handled by AI models today — <button class="insight-link" onclick="openModal()">see the Anthropic research →</button>
+    </p>
+
+    <a href="#contact" class="hero-cta">See How It Works →</a>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="chartModal" onclick="closeModalOnOverlay(event)">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">Figure 2 — Theoretical capability vs. observed AI exposure<br>by occupational category</div>
+          <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <img
+          src="https://cdn.sanity.io/images/4zrzovbb/website/c1952c81bca02a7c8cc05ef7801e67ca60831c55-4096x4096.png"
+          alt="Anthropic Economic Index — AI coverage by occupational category"
+          class="modal-img">
+        <div class="modal-footer">
+          <p class="modal-caption">Share of job tasks that LLMs could theoretically perform (blue) and observed AI usage coverage (red) — across 20 occupational categories. Source: Anthropic Economic Index, 2025.</p>
+          <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener" class="modal-source">Read full report ↗</a>
         </div>
       </div>
     </div>
-
-    <a href="#contact" class="hero-cta">See How It Works →</a>
   </section>
 
   <!-- ─── SECTION 2: BENEFITS ─── -->
@@ -745,7 +803,7 @@
       <!-- Video -->
       <div class="video-frame">
         <video autoplay muted loop playsinline>
-          <source src="../security/assets/video/Security_VAI (1).mp4" type="video/mp4">
+          <source src="../assets/video/Construction.mp4" type="video/mp4">
         </video>
         <div class="video-caption">Vision AI — live safety &amp; security monitoring across construction sites</div>
       </div>
@@ -1136,6 +1194,18 @@
       e.preventDefault();
       document.getElementById('demoForm').style.display = 'none';
       document.getElementById('formSuccess').style.display = 'block';
+    }
+
+    function openModal() {
+      document.getElementById('chartModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('chartModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeModalOnOverlay(e) {
+      if (e.target === document.getElementById('chartModal')) closeModal();
     }
   </script>
 

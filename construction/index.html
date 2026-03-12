@@ -598,6 +598,12 @@
       position: relative;
       background: #111;
     }
+    .workflow-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
     .workflow-placeholder {
       width: 100%;
       height: 100%;
@@ -1220,10 +1226,9 @@
   <!-- UC 1: Data Collection -->
   <div class="workflow-section">
     <div class="workflow-media">
-      <div class="workflow-placeholder">
-        <div class="ph-icon">📷</div>
-        <div class="ph-label"><!-- ADD: data-collection.gif --></div>
-      </div>
+      <video autoplay muted loop playsinline>
+        <source src="../assets/video/Workflow_1.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="workflow-text">
       <div class="wf-num">Workflow 01 of 03</div>
@@ -1260,10 +1265,9 @@
   <!-- UC 2: Decision Making -->
   <div class="workflow-section flip">
     <div class="workflow-media">
-      <div class="workflow-placeholder">
-        <div class="ph-icon">🧠</div>
-        <div class="ph-label"><!-- ADD: decision-making.gif --></div>
-      </div>
+      <video autoplay muted loop playsinline>
+        <source src="../assets/video/Workflow_2.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="workflow-text">
       <div class="wf-num">Workflow 02 of 03</div>

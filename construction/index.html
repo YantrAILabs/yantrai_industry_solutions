@@ -606,14 +606,16 @@
       object-fit: cover;
       display: block;
     }
+    /* WF2: wide 16:9 video — contain so full frame is always visible */
+    .wf2-video { object-fit: contain !important; background: #000; }
     /* ── WF3 Chart Panel ── */
     .wf3-chart-outer {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
-      background: #0a0c14;
-      padding: 24px 18px 16px;
+      background: #ffffff;
+      padding: 24px 20px 16px;
       gap: 10px;
     }
     .wf3-chart-canvas-wrap {
@@ -624,12 +626,12 @@
     .wf3-caption {
       font-family: 'Inter', sans-serif;
       font-size: 11.5px;
-      color: rgba(255,255,255,0.35);
+      color: rgba(0,0,0,0.45);
       line-height: 1.65;
       text-align: center;
       margin: 0;
       padding: 10px 12px 0;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      border-top: 1px solid rgba(0,0,0,0.08);
       flex-shrink: 0;
     }
     .workflow-placeholder {
@@ -1294,8 +1296,8 @@
 
   <!-- UC 2: Decision Making -->
   <div class="workflow-section flip">
-    <div class="workflow-media">
-      <video autoplay muted loop playsinline>
+    <div class="workflow-media" style="background:#000;">
+      <video autoplay muted loop playsinline class="wf2-video">
         <source src="../assets/video/Workflow_2.mp4" type="video/mp4">
       </video>
     </div>
@@ -1333,7 +1335,7 @@
 
   <!-- UC 3: Profitability -->
   <div class="workflow-section">
-    <div class="workflow-media" style="background:#0a0c14;">
+    <div class="workflow-media" style="background:#ffffff;">
       <div class="wf3-chart-outer">
         <div class="wf3-chart-canvas-wrap">
           <canvas id="wf3Chart"></canvas>
@@ -1559,59 +1561,98 @@
     function p1(w){ return +(8+(92/56)*(w-9)).toFixed(1); }
     function p2(w){ return +(23+(77/31)*(w-18)).toFixed(1); }
 
+    // ── White-background colour palette ──────────────────────────────────
+    const C = {
+      initPaceLine  : '#a0aec0',          // muted blue-gray
+      adjPaceLine   : '#d97706',          // rich amber
+      initProjLine  : 'rgba(0,0,0,0.18)', // subtle dark dashed
+      adjProjLine   : 'rgba(217,119,6,0.65)', // amber dashed
+      pointBg       : '#ffffff',
+      gridLine      : 'rgba(0,0,0,0.06)',
+      axisBorder    : 'rgba(0,0,0,0.1)',
+      tickColor     : '#aaa',
+      axisTitle     : '#ccc',
+      avoidedFill   : 'rgba(239,68,68,0.07)',
+      dueLine       : 'rgba(0,0,0,0.18)',
+      riskLine      : 'rgba(217,119,6,0.3)',
+    };
+
     const datasets = [
       {
         label:'Initial Projection',
         data: weeks.map(w => p1(w)),
-        borderColor:'rgba(255,255,255,0.2)',
+        borderColor: C.initProjLine,
         borderWidth:1.5, borderDash:[5,4],
         pointRadius:0, tension:0, spanGaps:true, order:4
       },
       {
         label:'Adjusted Projection',
         data: weeks.map(w => (w>=18&&w<=49) ? p2(w) : null),
-        borderColor:'rgba(245,166,35,0.6)',
+        borderColor: C.adjProjLine,
         borderWidth:1.5, borderDash:[5,4],
         pointRadius:0, tension:0, spanGaps:false, order:3
       },
       {
         label:'Actual — Initial Pace',
         data: weeks.map(w => aiRaw[w]??null),
-        borderColor:'#c8c8c8', borderWidth:2.5,
+        borderColor: C.initPaceLine, borderWidth:2.5,
         pointRadius: weeks.map(w => aiDotWeeks.includes(w)?3.5:0),
-        pointBackgroundColor:'#c8c8c8',
-        pointBorderColor:'#0a0c14', pointBorderWidth:1.5,
+        pointBackgroundColor: C.initPaceLine,
+        pointBorderColor: C.pointBg, pointBorderWidth:1.5,
         tension:0, spanGaps:false, order:2
       },
       {
         label:'Actual — Adjusted Pace',
         data: weeks.map(w => aaRaw[w]??null),
-        borderColor:'#f5a623', borderWidth:3,
+        borderColor: C.adjPaceLine, borderWidth:3,
         pointRadius: weeks.map(w => aaDotWeeks.includes(w) ? (w===18?5.5:3.5) : 0),
-        pointBackgroundColor:'#f5a623',
-        pointBorderColor:'#0a0c14', pointBorderWidth:1.5,
+        pointBackgroundColor: C.adjPaceLine,
+        pointBorderColor: C.pointBg, pointBorderWidth:1.5,
         tension:0, spanGaps:false, order:1
       }
     ];
 
     const annotations = {
-      avoidedZone:{type:'box',xMin:49,xMax:65,yMin:0,yMax:100,backgroundColor:'rgba(220,60,60,0.07)',borderWidth:0},
-      dueLine:{type:'line',xMin:49,xMax:49,borderColor:'rgba(255,255,255,0.15)',borderWidth:1.5,borderDash:[6,4]},
-      riskLine:{type:'line',xMin:18,xMax:18,borderColor:'rgba(245,166,35,0.18)',borderWidth:1,borderDash:[4,3]},
-      lbInitPace:{type:'label',xValue:12.5,yValue:50,content:['Initial','pace'],color:'rgba(255,255,255,0.45)',font:{size:10,weight:'bold',family:'Inter,sans-serif'},textAlign:'center'},
-      lbAdjPace:{type:'label',xValue:21,yValue:63,content:['Adjusted','pace'],color:'#f5a623',font:{size:10,weight:'bold',family:'Inter,sans-serif'},textAlign:'center'},
-      lbRisk:{type:'label',xValue:18,yValue:12,content:'⚠ Risk of Delay',color:'#f5a623',font:{size:9,family:'monospace'},backgroundColor:'rgba(245,166,35,0.08)',borderColor:'rgba(245,166,35,0.3)',borderWidth:1,borderRadius:4,padding:{x:5,y:3}},
-      lbAdjProj:{type:'label',xValue:33,yValue:84,content:['Adjusted projected','completion'],color:'rgba(245,166,35,0.65)',font:{size:9.5,weight:'bold',family:'Inter,sans-serif'},textAlign:'center'},
-      lbInitProj:{type:'label',xValue:56,yValue:74,content:['Initial projected','completion'],color:'rgba(255,255,255,0.28)',font:{size:9.5,weight:'bold',family:'Inter,sans-serif'},textAlign:'center'},
-      lbAvoided:{type:'label',xValue:57,yValue:42,content:'Avoided delay',color:'rgba(220,80,80,0.65)',font:{size:9.5,weight:'bold',family:'Inter,sans-serif'},textAlign:'center'}
+      avoidedZone :{ type:'box', xMin:49, xMax:65, yMin:0, yMax:100, backgroundColor:C.avoidedFill, borderWidth:0 },
+      dueLine     :{ type:'line', xMin:49, xMax:49, borderColor:C.dueLine, borderWidth:1.5, borderDash:[6,4] },
+      riskLine    :{ type:'line', xMin:18, xMax:18, borderColor:C.riskLine, borderWidth:1, borderDash:[4,3] },
+
+      lbInitPace :{ type:'label', xValue:12.5, yValue:50,
+        content:['Initial','pace'], color:'#555',
+        font:{size:10,weight:'bold',family:'Inter,sans-serif'}, textAlign:'center' },
+
+      lbAdjPace  :{ type:'label', xValue:21, yValue:64,
+        content:['Adjusted','pace'], color:C.adjPaceLine,
+        font:{size:10,weight:'bold',family:'Inter,sans-serif'}, textAlign:'center' },
+
+      lbRisk     :{ type:'label', xValue:18, yValue:12,
+        content:'⚠ Risk of Delay', color:'#d97706',
+        font:{size:9,family:'monospace'},
+        backgroundColor:'rgba(217,119,6,0.07)',
+        borderColor:'rgba(217,119,6,0.35)', borderWidth:1, borderRadius:4,
+        padding:{x:5,y:3} },
+
+      lbAdjProj  :{ type:'label', xValue:33, yValue:84,
+        content:['Adjusted projected','completion'], color:'rgba(180,100,0,0.8)',
+        font:{size:9.5,weight:'bold',family:'Inter,sans-serif'}, textAlign:'center' },
+
+      lbInitProj :{ type:'label', xValue:56, yValue:74,
+        content:['Initial projected','completion'], color:'rgba(0,0,0,0.32)',
+        font:{size:9.5,weight:'bold',family:'Inter,sans-serif'}, textAlign:'center' },
+
+      lbAvoided  :{ type:'label', xValue:57, yValue:42,
+        content:'Avoided delay', color:'rgba(200,50,50,0.7)',
+        font:{size:9.5,weight:'bold',family:'Inter,sans-serif'}, textAlign:'center' }
     };
 
-    // Point value labels
+    // Per-point value labels
     Object.entries(aiDotLabels).forEach(([w,lbl])=>{
-      annotations['aiL'+w]={type:'label',xValue:+w,yValue:(aiRaw[+w]||0)+7,content:lbl,color:'rgba(200,200,200,0.6)',font:{size:8.5,family:'monospace'}};
+      annotations['aiL'+w]={ type:'label', xValue:+w, yValue:(aiRaw[+w]||0)+7,
+        content:lbl, color:'rgba(0,0,0,0.35)', font:{size:8.5,family:'monospace'} };
     });
     Object.entries(aaDotLabels).forEach(([w,lbl])=>{
-      annotations['aaL'+w]={type:'label',xValue:+w,yValue:(aaRaw[+w]||0)+7,content:lbl,color:'#f5a623',font:{size:8.5,family:'monospace'}};
+      annotations['aaL'+w]={ type:'label', xValue:+w, yValue:(aaRaw[+w]||0)+7,
+        content:lbl, color:'#c27a05', font:{size:8.5,family:'monospace'} };
     });
 
     const ctx = document.getElementById('wf3Chart');
@@ -1626,26 +1667,29 @@
         scales:{
           x:{
             type:'linear', min:9, max:65,
-            ticks:{ color:'#555', font:{size:9,family:'monospace'}, stepSize:4,
+            ticks:{ color:C.tickColor, font:{size:9,family:'monospace'}, stepSize:4,
               callback: v => (v%4===1||v===9) ? v : null },
-            grid:{ color:'rgba(255,255,255,0.04)' },
-            border:{ color:'rgba(255,255,255,0.08)' },
-            title:{ display:true, text:'WORK WEEK', color:'#3d3d3d', font:{size:8.5,family:'monospace'} }
+            grid:{ color:C.gridLine },
+            border:{ color:C.axisBorder },
+            title:{ display:true, text:'WORK WEEK', color:C.axisTitle,
+              font:{size:8.5,family:'monospace'} }
           },
           y:{
             min:0, max:100,
-            ticks:{ callback:v=>v+'%', color:'#555', font:{size:9,family:'monospace'}, stepSize:20 },
-            grid:{ color:'rgba(255,255,255,0.04)' },
+            ticks:{ callback:v=>v+'%', color:C.tickColor,
+              font:{size:9,family:'monospace'}, stepSize:20 },
+            grid:{ color:C.gridLine },
             border:{ display:false },
-            title:{ display:true, text:'COMPLETION RATE', color:'#3d3d3d', font:{size:8.5,family:'monospace'} }
+            title:{ display:true, text:'COMPLETION RATE', color:C.axisTitle,
+              font:{size:8.5,family:'monospace'} }
           }
         },
         plugins:{
           legend:{ display:false },
           tooltip:{
-            backgroundColor:'#0f1117',
-            borderColor:'rgba(255,255,255,0.1)', borderWidth:1,
-            titleColor:'#888', bodyColor:'#ccc',
+            backgroundColor:'#fff',
+            borderColor:'rgba(0,0,0,0.1)', borderWidth:1,
+            titleColor:'#666', bodyColor:'#333',
             callbacks:{ label: c => c.parsed.y!=null ? `${c.dataset.label}: ${c.parsed.y}%` : '' }
           },
           annotation:{ annotations }

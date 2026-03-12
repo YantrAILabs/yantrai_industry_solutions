@@ -1083,6 +1083,24 @@
     }
     .footer-bottom a:hover { color: rgba(255,255,255,0.6); }
 
+    /* ─── TABLET ─── */
+    @media (max-width: 1024px) {
+      .benefits-inner, .intel-intro, .results-inner { padding: 80px 40px; }
+      .implementation { padding: 80px 40px; }
+      .hardware { padding: 80px 40px; }
+      .workflow-intro { padding: 80px 40px 64px; }
+      .team-inner { padding: 80px 48px; }
+      .footer-top { padding: 64px 40px; gap: 48px; }
+      .workflow-text { padding: 56px 40px; }
+      .wf3-header { flex-direction: column; gap: 10px; }
+      .wf3-badges { justify-content: flex-start; }
+      .logo-card { padding: 28px 16px; }
+      .result-card { padding: 36px 28px; }
+      .timeline-item { padding: 40px 28px; }
+      .timeline-item:first-child { padding-left: 0; }
+      .intel-frame-wrap iframe { height: 380px; }
+    }
+
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
       nav { padding: 16px 24px; }
@@ -1102,6 +1120,101 @@
       .footer-top { grid-template-columns: 1fr; gap: 56px; padding: 56px 24px; }
       .form-row { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; padding: 20px 24px; }
+
+      /* ── Previously missing: Deployment padding ── */
+      .implementation { padding: 64px 24px; }
+
+      /* ── Previously missing: Hero text ── */
+      .hero-sub { font-size: 0.95rem; max-width: 100%; }
+      .hero-insight { font-size: 0.875rem; max-width: 100%; }
+      .hero-cta { padding: 14px 28px; font-size: 13px; }
+
+      /* ── Previously missing: Video frame ── */
+      .video-frame { margin: 32px 0 0; }
+
+      /* ── Previously missing: Problem item ── */
+      .problem-item { padding: 24px 20px; }
+
+      /* ── Previously missing: Intel iframe ── */
+      .intel-frame-wrap iframe { height: 260px; }
+
+      /* ── Previously missing: Timeline content ── */
+      .timeline-content h3 { font-size: 1.1rem; }
+
+      /* ── Previously missing: Logo card ── */
+      .logo-card { padding: 24px 12px; min-height: 100px; }
+
+      /* ── Previously missing: WF col & text ── */
+      .wf-col { padding: 16px 14px; }
+      .workflow-text p { max-width: 100%; }
+
+      /* ── Previously missing: Result card ── */
+      .result-card { padding: 32px 20px; }
+
+      /* ── WF3: taller media container ── */
+      .wf3-section .workflow-media { min-height: 400px; }
+
+      /* ── WF3: all responsive overrides ── */
+      .wf3-outer { padding: 12px 14px 8px; gap: 4px; }
+      .wf3-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .wf3-tracker-label { font-size: 8px; }
+      .wf3-title { font-size: 11px; }
+      .wf3-subtitle { font-size: 8px; }
+      .wf3-badges { gap: 4px; }
+      .wf3-badge { padding: 3px 7px; border-radius: 6px; }
+      .wf3-badge-lbl { font-size: 7px; }
+      .wf3-badge-val { font-size: 10px; }
+      .wf3-legend { gap: 5px; padding-top: 5px; }
+      .wf3-legend-items { gap: 8px; }
+      .wf3-legend-item { font-size: 8.5px; }
+      .wf3-delay-badge { font-size: 8.5px; padding: 3px 7px; }
+      .wf3-insight { font-size: 8.5px; padding: 6px 8px; line-height: 1.5; }
+      .wf3-caption { font-size: 8.5px; padding: 4px 10px; }
+    }
+
+    /* ─── SMALL PHONE ─── */
+    @media (max-width: 480px) {
+      nav { padding: 14px 20px; }
+      .nav-cta { padding: 8px 18px; font-size: 12px; }
+
+      #hero { padding: 64px 20px 48px; }
+      #hero h1 { font-size: 2.2rem; letter-spacing: -0.025em; }
+      .hero-sub { font-size: 0.9rem; }
+      .hero-insight { font-size: 0.84rem; }
+      .hero-cta { padding: 12px 24px; font-size: 13px; }
+      .hero-eyebrow { margin-bottom: 24px; }
+      .section-heading { font-size: 2rem; }
+
+      .benefits-inner { padding: 48px 20px; }
+      .problem-item { padding: 20px 16px; gap: 10px; }
+      .problem-icon { font-size: 1.5rem; }
+      .problem-title { font-size: 1rem; }
+
+      .intel-intro { padding: 48px 20px 40px; }
+      .intel-frame-wrap iframe { height: 220px; }
+
+      .implementation { padding: 48px 20px; }
+      .timeline-num { font-size: 40px; }
+
+      .logo-card { padding: 20px 10px; min-height: 80px; }
+      .logo-card img { max-width: 72px; max-height: 26px; }
+
+      .workflow-intro { padding: 48px 20px 40px; }
+      .workflow-text { padding: 36px 20px; }
+      .wf-col { padding: 14px 12px; }
+      .wf-col ul li { font-size: 0.75rem; }
+
+      .wf3-section .workflow-media { min-height: 360px; }
+      .wf3-insight { display: none; }
+
+      .results-inner { padding: 48px 20px; }
+      .result-card { padding: 28px 16px; }
+
+      .team-inner { padding: 48px 20px; }
+
+      .footer-top { padding: 48px 20px; gap: 40px; }
+      .footer-bottom { padding: 16px 20px; }
+      .footer-form-label { margin-bottom: 20px; }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -1442,7 +1555,7 @@
   </div>
 
   <!-- UC 3: Profitability -->
-  <div class="workflow-section">
+  <div class="workflow-section wf3-section">
     <div class="workflow-media" style="background:#ffffff;">
       <div class="wf3-outer">
         <!-- Header -->

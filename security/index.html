@@ -21,6 +21,7 @@
       --gray:     #666666;
       --gray-dim: #999999;
       --border:   rgba(0, 0, 0, 0.09);
+      --amber:    #d97706;
     }
 
     body {
@@ -138,6 +139,11 @@
       color: var(--gray);
       line-height: 1.75;
       margin-bottom: 64px;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--gray);
     }
 
     /* ─── SECTION 3: PLATFORM OVERVIEW ─── */
@@ -473,43 +479,6 @@
       max-width: 460px;
     }
 
-    /* ─── CORE TEAM SECTION ─── */
-    .core-team-wrap {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .core-team {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 100px 72px;
-    }
-    .core-team .section-label {
-      text-align: left;
-    }
-    .core-team .section-heading {
-      text-align: left;
-      margin-bottom: 12px;
-    }
-    .core-team .section-subtext {
-      text-align: left;
-      margin: 0 0 60px 0;
-      max-width: 560px;
-    }
-    .team-img-wrap {
-      width: 100%;
-    }
-    .team-img-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 4px;
-    }
-
-    /* ─── SECTION 9: TEAM ─── */
-    .team-section { line-height: 0; }
-    .team-section img { width: 100%; display: block; }
-
     /* ─── SECTION 10: FOOTER ─── */
     footer {
       background: var(--bg);
@@ -566,6 +535,336 @@
       color: var(--gray-dim);
     }
 
+    /* ─── TEAM CARDS ─── */
+    #team {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .team-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 60px;
+    }
+    .team-header-block {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .team-header-block .section-label { margin-bottom: 20px; }
+    .team-header-block .section-heading { margin-bottom: 20px; }
+    .team-header-block .section-sub {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .team-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .tc {
+      background: #fafaf9;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .tc:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.09);
+    }
+    .tc-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #d0cfca;
+    }
+    .tc-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: grayscale(100%);
+      display: block;
+      transition: filter 0.4s ease;
+    }
+    .tc:hover .tc-photo img { filter: grayscale(50%); }
+    .tc-body { padding: 20px 20px 24px; }
+    .tc-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    .tc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+    .tc-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #3b30e8;
+      background: #ebebfd;
+      border-radius: 3px;
+      padding: 3px 8px;
+    }
+    .tc-bio {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #4a4a47;
+      font-weight: 400;
+    }
+    .tc-bio .hl-college {
+      font-weight: 600;
+      color: var(--dark);
+      border-bottom: 2px solid var(--amber);
+      padding-bottom: 1px;
+    }
+    .tc-bio .hl-company {
+      font-weight: 600;
+      color: var(--dark);
+      background: #f5f5f2;
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+    .tc-bio .metric {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--red);
+      background: #fdf1f0;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .tc-creds {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tc-cred {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .tc-cred.amber {
+      border-color: #e8b98a;
+      color: var(--amber);
+      background: #fdf6ef;
+    }
+
+    /* ─── UC01: Camera Grid Animation ─── */
+    .uc-cam-grid {
+      width: 100%; height: 100%;
+      background: #0a0a0a;
+      display: grid;
+      grid-template-rows: 1fr 40px;
+      font-family: 'Inter', monospace;
+    }
+    .uc-cams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      padding: 12px 12px 0;
+    }
+    .uc-cam {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      min-height: 120px;
+    }
+    .uc-cam-label {
+      position: absolute; top: 6px; left: 8px;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.5); z-index: 2;
+    }
+    .uc-cam-time {
+      position: absolute; top: 6px; right: 8px;
+      font-size: 8px; color: rgba(255,255,255,0.3); z-index: 2;
+    }
+    /* Simulated scene lines */
+    .uc-cam::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 18px,
+        rgba(255,255,255,0.015) 18px, rgba(255,255,255,0.015) 19px
+      );
+    }
+    /* Detection bounding box */
+    .uc-bbox {
+      position: absolute;
+      border: 2px solid #2563EB;
+      border-radius: 2px;
+      z-index: 3;
+    }
+    .uc-bbox.threat { border-color: #e63030; }
+    .uc-bbox-lbl {
+      position: absolute; top: -18px; left: 0;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+      background: #2563EB; color: #fff; padding: 1px 5px; border-radius: 2px;
+      white-space: nowrap;
+    }
+    .uc-bbox-lbl.threat { background: #e63030; }
+    /* Cam 3: threat badge */
+    .uc-threat-badge {
+      position: absolute; bottom: 8px; left: 8px; right: 8px;
+      background: rgba(230,48,48,0.15);
+      border: 1px solid rgba(230,48,48,0.6);
+      border-radius: 4px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      color: #e63030; text-align: center; padding: 4px 6px;
+      animation: uc-pulse 1.4s ease-in-out infinite;
+      z-index: 4;
+    }
+    @keyframes uc-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    /* Bbox animations */
+    .uc-bbox.b1 { top: 30%; left: 20%; width: 28%; height: 45%; animation: uc-bbox-fade 3s ease-in-out infinite 0s; }
+    .uc-bbox.b2 { top: 25%; left: 55%; width: 24%; height: 42%; animation: uc-bbox-fade 3s ease-in-out infinite 1s; }
+    .uc-bbox.b3 { top: 28%; left: 30%; width: 30%; height: 48%; animation: uc-bbox-fade 2.8s ease-in-out infinite 0.4s; }
+    .uc-bbox.b4 { top: 22%; left: 15%; width: 26%; height: 52%; animation: uc-bbox-fade 3.2s ease-in-out infinite 0.8s; }
+    @keyframes uc-bbox-fade {
+      0%, 20% { opacity: 0; }
+      30%, 80% { opacity: 1; }
+      90%, 100% { opacity: 0; }
+    }
+    /* Alert ticker */
+    .uc-ticker {
+      background: #111; border-top: 1px solid #222;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 12px; overflow: hidden;
+    }
+    .uc-ticker-live {
+      font-size: 8px; font-weight: 800; letter-spacing: 0.15em;
+      color: #e63030; flex-shrink: 0;
+      animation: uc-pulse 1.2s ease-in-out infinite;
+    }
+    .uc-ticker-text {
+      font-size: 9px; color: rgba(255,255,255,0.5);
+      white-space: nowrap; letter-spacing: 0.05em;
+      animation: uc-scroll 8s linear infinite;
+    }
+    @keyframes uc-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-40%); }
+    }
+
+    /* ─── UC04: Floor-plan Heatmap ─── */
+    .uc-heatmap-wrap {
+      width: 100%; height: 100%;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 20px;
+      gap: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+    .uc-floorplan {
+      width: 100%; max-width: 340px;
+      aspect-ratio: 16/9;
+      position: relative;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    /* Floor plan rooms via CSS */
+    .uc-room {
+      position: absolute;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+    /* Hotspot overlay */
+    .uc-hotspot {
+      position: absolute;
+      border-radius: 50%;
+      animation: uc-hotpulse 2.5s ease-in-out infinite;
+    }
+    .uc-hotspot.h1 {
+      width: 80px; height: 80px;
+      top: 10%; left: 15%;
+      background: radial-gradient(circle, rgba(230,48,48,0.35) 0%, transparent 70%);
+      animation-delay: 0s;
+    }
+    .uc-hotspot.h2 {
+      width: 60px; height: 60px;
+      top: 50%; left: 60%;
+      background: radial-gradient(circle, rgba(215,119,6,0.3) 0%, transparent 70%);
+      animation-delay: 0.8s;
+    }
+    .uc-hotspot.h3 {
+      width: 50px; height: 50px;
+      top: 65%; left: 30%;
+      background: radial-gradient(circle, rgba(215,119,6,0.2) 0%, transparent 70%);
+      animation-delay: 1.6s;
+    }
+    @keyframes uc-hotpulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    /* Camera icons on floor plan */
+    .uc-cam-dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: #2563EB;
+      border-radius: 50%;
+      border: 1.5px solid #fff;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    /* Insight cards */
+    .uc-insights {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+    }
+    .uc-insight-card {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 10px 8px;
+      text-align: center;
+    }
+    .uc-insight-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0a0a0a;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .uc-insight-val.amber { color: #d97706; }
+    .uc-insight-val.blue { color: #2563EB; }
+    .uc-insight-val.green { color: #059669; }
+    .uc-insight-lbl {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
     /* ─── MOBILE ─── */
     @media (max-width: 768px) {
       nav { padding: 18px 24px; }
@@ -601,6 +900,87 @@
       .footer-top { grid-template-columns: 1fr; }
       .footer-contact { text-align: left; }
       footer { padding: 56px 24px 32px; }
+
+      /* Hero */
+      .hero h1 { font-size: 2.8rem; }
+      .hero p { font-size: 1rem; max-width: 100%; }
+      .pill-btn { padding: 14px 32px; font-size: 14px; }
+
+      /* Video */
+      .video-section { padding: 0; }
+
+      /* IAAS iframe */
+      .iaas-frame-wrap { width: 100%; border-radius: 8px; }
+      .iaas-section iframe { min-height: 420px; }
+      .iaas-section { padding: 60px 0; }
+
+      /* Use case */
+      .use-case-placeholder { min-height: 280px; }
+      .use-case-section.reverse { direction: ltr; }
+
+      /* Team cards */
+      .team-inner { padding: 64px 24px; }
+      .team-header-block { margin-bottom: 40px; }
+      .team-cards { grid-template-columns: 1fr; gap: 16px; }
+      .tc-name { font-size: 22px; }
+    }
+
+    /* ─── TABLET ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 20px 40px; }
+      .hero { padding: 110px 40px 90px; }
+      .platform { padding: 80px 40px; }
+      .iaas-frame-wrap { width: 80%; }
+      .implementation { padding: 80px 40px; }
+      .hardware { padding: 80px 40px; }
+      .benefits { padding: 80px 40px; }
+      .use-case-text { padding: 60px 40px; }
+      .team-inner { padding: 80px 48px; }
+      .team-cards { gap: 14px; }
+      .tc-name { font-size: 22px; }
+      footer { padding: 60px 40px 32px; }
+    }
+
+    /* ─── SMALL PHONE ─── */
+    @media (max-width: 480px) {
+      nav { padding: 14px 20px; }
+      .nav-cta { padding: 8px 16px; font-size: 12px; }
+
+      .hero { padding: 72px 20px 56px; }
+      .hero h1 { font-size: 2.4rem; letter-spacing: -0.025em; }
+      .hero p { font-size: 0.9rem; }
+      .pill-btn { padding: 12px 24px; font-size: 13px; }
+
+      .platform { padding: 48px 20px; }
+      .platform-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .platform-card { padding: 24px 16px; }
+
+      .iaas-section { padding: 48px 0; }
+      .iaas-section iframe { min-height: 400px; }
+      .iaas-heading { font-size: 2rem; padding: 0 20px; }
+
+      .implementation { padding: 48px 20px; }
+      .timeline-num { font-size: 40px; }
+      .timeline-content h3 { font-size: 1.1rem; }
+
+      .hardware { padding: 48px 20px; }
+      .logo-grid { grid-template-columns: repeat(2, 1fr); }
+      .logo-card { padding: 24px 12px; min-height: 90px; }
+      .logo-card img { max-width: 80px; max-height: 30px; }
+
+      .benefits { padding: 48px 20px; }
+      .benefits-statement { font-size: 2rem; }
+
+      .use-case-text { padding: 40px 20px; }
+      .use-case-text h2 { font-size: 1.7rem; }
+      .use-case-text p { font-size: 0.9rem; }
+
+      .team-inner { padding: 48px 20px; }
+      .tc-body { padding: 16px 16px 20px; }
+      .tc-name { font-size: 20px; }
+
+      footer { padding: 48px 20px 28px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; padding-top: 20px; }
     }
   </style>
 </head>
@@ -795,9 +1175,40 @@
   <!-- SECTION 8: USE CASES -->
   <section class="use-case-section">
     <div class="use-case-media">
-      <!-- ADD: use-case-monitoring.gif -->
-      <div class="use-case-placeholder">
-        <span>Add use-case-1 media to assets/use-case/</span>
+      <div class="uc-cam-grid">
+        <div class="uc-cams">
+          <!-- CAM 01 -->
+          <div class="uc-cam">
+            <div class="uc-cam-label">CAM 01 · LOBBY</div>
+            <div class="uc-cam-time">14:23:41</div>
+            <div class="uc-bbox b1"><span class="uc-bbox-lbl">PERSON</span></div>
+            <div class="uc-bbox b2"><span class="uc-bbox-lbl">PERSON</span></div>
+          </div>
+          <!-- CAM 02 -->
+          <div class="uc-cam">
+            <div class="uc-cam-label">CAM 02 · GATE A</div>
+            <div class="uc-cam-time">14:23:41</div>
+            <div class="uc-bbox b3"><span class="uc-bbox-lbl">PERSON</span></div>
+          </div>
+          <!-- CAM 03 — THREAT -->
+          <div class="uc-cam">
+            <div class="uc-cam-label">CAM 03 · PERIMETER</div>
+            <div class="uc-cam-time">14:23:41</div>
+            <div class="uc-bbox threat b4"><span class="uc-bbox-lbl threat">THREAT</span></div>
+            <div class="uc-threat-badge">⚠ FIREARM DETECTED</div>
+          </div>
+          <!-- CAM 04 -->
+          <div class="uc-cam">
+            <div class="uc-cam-label">CAM 04 · EXIT B</div>
+            <div class="uc-cam-time">14:23:41</div>
+            <div class="uc-bbox b1" style="animation-delay:1.5s"><span class="uc-bbox-lbl">PERSON</span></div>
+          </div>
+        </div>
+        <!-- Alert ticker -->
+        <div class="uc-ticker">
+          <span class="uc-ticker-live">● LIVE</span>
+          <span class="uc-ticker-text">FIREARM DETECTED · CAM 03 · 14:23:41 &nbsp;&nbsp;&nbsp; TAILGATING ALERT · GATE A · 14:21:09 &nbsp;&nbsp;&nbsp; PERIMETER BREACH · CAM 03 · 14:19:55 &nbsp;&nbsp;&nbsp; FIREARM DETECTED · CAM 03 · 14:23:41 &nbsp;&nbsp;&nbsp; TAILGATING ALERT · GATE A · 14:21:09</span>
+        </div>
       </div>
     </div>
     <div class="use-case-text">
@@ -809,10 +1220,11 @@
 
   <section class="use-case-section reverse">
     <div class="use-case-media">
-      <!-- ADD: use-case-efficiency.gif -->
-      <div class="use-case-placeholder">
-        <span>Add use-case-2 media to assets/use-case/</span>
-      </div>
+      <video autoplay muted loop playsinline>
+        <source src="./assets/use-case/uc02.mp4" type="video/mp4">
+        <!-- Download from: https://www.pexels.com/video/7255101/ (HD) → save as uc02.mp4 -->
+        <div class="use-case-placeholder"><span>Download uc02.mp4 from Pexels #7255101</span></div>
+      </video>
     </div>
     <div class="use-case-text">
       <div class="uc-num">Use Case 02</div>
@@ -823,10 +1235,11 @@
 
   <section class="use-case-section">
     <div class="use-case-media">
-      <!-- ADD: use-case-threat.gif -->
-      <div class="use-case-placeholder">
-        <span>Add use-case-3 media to assets/use-case/</span>
-      </div>
+      <video autoplay muted loop playsinline>
+        <source src="./assets/use-case/uc03.mp4" type="video/mp4">
+        <!-- Download from: https://www.pexels.com/video/4351668/ (HD) → save as uc03.mp4 -->
+        <div class="use-case-placeholder"><span>Download uc03.mp4 from Pexels #4351668</span></div>
+      </video>
     </div>
     <div class="use-case-text">
       <div class="uc-num">Use Case 03</div>
@@ -837,9 +1250,40 @@
 
   <section class="use-case-section reverse">
     <div class="use-case-media">
-      <!-- ADD: use-case-analytics.gif -->
-      <div class="use-case-placeholder">
-        <span>Add use-case-4 media to assets/use-case/</span>
+      <div class="uc-heatmap-wrap">
+        <div class="uc-floorplan">
+          <!-- Rooms -->
+          <div class="uc-room" style="top:5%;left:5%;width:38%;height:40%;"></div>
+          <div class="uc-room" style="top:5%;left:57%;width:38%;height:40%;"></div>
+          <div class="uc-room" style="top:55%;left:5%;width:25%;height:38%;"></div>
+          <div class="uc-room" style="top:55%;left:36%;width:28%;height:38%;"></div>
+          <div class="uc-room" style="top:55%;left:70%;width:25%;height:38%;"></div>
+          <!-- Heatspot overlays -->
+          <div class="uc-hotspot h1"></div>
+          <div class="uc-hotspot h2"></div>
+          <div class="uc-hotspot h3"></div>
+          <!-- Camera dots -->
+          <div class="uc-cam-dot" style="top:8%;left:10%;"></div>
+          <div class="uc-cam-dot" style="top:8%;left:60%;"></div>
+          <div class="uc-cam-dot" style="top:58%;left:8%;"></div>
+          <div class="uc-cam-dot" style="top:58%;left:38%;"></div>
+          <div class="uc-cam-dot" style="top:58%;left:72%;"></div>
+          <div class="uc-cam-dot" style="top:40%;left:48%;"></div>
+        </div>
+        <div class="uc-insights">
+          <div class="uc-insight-card">
+            <div class="uc-insight-val amber">12</div>
+            <div class="uc-insight-lbl">Tailgating/wk</div>
+          </div>
+          <div class="uc-insight-card">
+            <div class="uc-insight-val blue">87%</div>
+            <div class="uc-insight-lbl">Cam Coverage</div>
+          </div>
+          <div class="uc-insight-card">
+            <div class="uc-insight-val green">2.3s</div>
+            <div class="uc-insight-lbl">Avg Response</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="use-case-text">
@@ -849,21 +1293,88 @@
     </div>
   </section>
 
-  <!-- CORE TEAM SECTION -->
-  <div class="core-team-wrap">
-    <div class="core-team">
-      <div class="section-label">Our Core Team</div>
-      <h2 class="section-heading">The Minds Behind<br>the Platform.</h2>
-      <p class="section-subtext">Engineers, operators, and founders who have built and scaled deep-tech products across security, AI, and enterprise software.</p>
-      <div class="team-img-wrap">
-        <img src="./assets/Team/Untitled design (1).png" alt="Yantra AI Labs Core Team — Rakesh, Rohit, Mohit">
+  <!-- TEAM CARDS -->
+  <section id="team">
+    <div class="team-inner">
+      <div class="team-header-block">
+        <div class="section-label">Our Core Team</div>
+        <h2 class="section-heading">The Minds Behind<br>the Platform.</h2>
+        <p class="section-sub">Engineers and operators from <strong>IIT Delhi</strong>, <strong>NIT Rourkela</strong> — Hero Group, Zomato, EY — who've lived the complexity of large-scale industrial ops and are now building multimodal AI that makes organisations truly intelligent.</p>
+      </div>
+      <div class="team-cards">
+
+        <!-- Rakesh -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_1.png" alt="Rakesh — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Rakesh</div>
+            <div class="tc-tags">
+              <span class="tc-tag">AI</span>
+              <span class="tc-tag">ML</span>
+              <span class="tc-tag">Engineering</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '13 · <span class="hl-company">EY</span>, <span class="hl-company">AI Monk</span>, <span class="hl-company">Dvara E-diary</span> · <span class="metric">$2M raised</span>
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">NIT Rourkela</span>
+              <span class="tc-cred">Patented AI</span>
+              <span class="tc-cred">EY · AI Monk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rohit -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_2.png" alt="Rohit — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Rohit</div>
+            <div class="tc-tags">
+              <span class="tc-tag">Business</span>
+              <span class="tc-tag">GTM</span>
+              <span class="tc-tag">Product</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '12 · <span class="hl-company">Hero Group</span> · EasyLokal <span class="metric">~$100K (Techstars)</span> → <span class="hl-company">WayCool</span> · <span class="hl-company">Zomato</span> 1.5M txns/month
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">NIT Rourkela</span>
+              <span class="tc-cred">Techstars</span>
+              <span class="tc-cred">Hero · Zomato</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mohit -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_3.png" alt="Mohit — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Mohit</div>
+            <div class="tc-tags">
+              <span class="tc-tag">Strategy</span>
+              <span class="tc-tag">Business</span>
+              <span class="tc-tag">AI</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">IIT Delhi</span> '12 · <span class="hl-company">Hero Group</span> <span class="metric">$200M+</span> · <span class="hl-company">Jangid Motors</span> <span class="metric">$5M ARR</span> · <span class="hl-company">Oye! Rickshaw</span> 100k+ txns/day, <span class="metric">$12M raised</span> (Matrix, Xiaomi)
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">IIT Delhi</span>
+              <span class="tc-cred">Jangid Motors</span>
+              <span class="tc-cred">Oye Rickshaw</span>
+              <span class="tc-cred">Hero Group</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-
-  <!-- SECTION 9: TEAM -->
-  <section class="team-section">
-    <img src="./assets/Team/Screenshot 2026-03-11 at 2.23.01 PM.png" alt="Yantra AI Labs Team">
   </section>
 
   <!-- SECTION 10: FOOTER -->

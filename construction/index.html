@@ -937,17 +937,144 @@
 
     /* ─── SECTION 6: TEAM ─── */
     #team {
-      background: var(--bg-alt);
+      background: #ffffff;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
     .team-inner {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 100px 72px;
+      padding: 100px 60px;
     }
-    .team-inner .section-sub { max-width: 540px; margin-bottom: 60px; }
-    .team-img { width: 100%; height: auto; display: block; border-radius: 2px; }
+    .team-header-block {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .team-header-block .section-label { margin-bottom: 20px; }
+    .team-header-block .section-heading { margin-bottom: 20px; }
+    .team-header-block .section-sub {
+      max-width: 580px;
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--gray);
+    }
+
+    /* Cards grid */
+    .team-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .tc {
+      background: #fafaf9;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .tc:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.09);
+    }
+
+    /* Photo */
+    .tc-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #d0cfca;
+    }
+    .tc-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: grayscale(100%);
+      display: block;
+      transition: filter 0.4s ease;
+    }
+    .tc:hover .tc-photo img { filter: grayscale(50%); }
+
+    /* Card body */
+    .tc-body { padding: 20px 20px 24px; }
+    .tc-name {
+      font-family: 'Sora', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    .tc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+    .tc-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #3b30e8;
+      background: #ebebfd;
+      border-radius: 3px;
+      padding: 3px 8px;
+    }
+    .tc-bio {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #4a4a47;
+      font-weight: 400;
+    }
+    .tc-bio .hl-college {
+      font-weight: 600;
+      color: var(--dark);
+      border-bottom: 2px solid var(--amber);
+      padding-bottom: 1px;
+    }
+    .tc-bio .hl-company {
+      font-weight: 600;
+      color: var(--dark);
+      background: #f5f5f2;
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+    .tc-bio .metric {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--red);
+      background: #fdf1f0;
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    /* Credential strip */
+    .tc-creds {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tc-cred {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--dark);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .tc-cred.amber {
+      border-color: #e8b98a;
+      color: var(--amber);
+      background: #fdf6ef;
+    }
 
     /* ─── SECTION 7: FOOTER ─── */
     #contact {
@@ -1090,6 +1217,8 @@
       .hardware { padding: 80px 40px; }
       .workflow-intro { padding: 80px 40px 64px; }
       .team-inner { padding: 80px 48px; }
+      .team-cards { gap: 14px; }
+      .tc-name { font-size: 22px; }
       .footer-top { padding: 64px 40px; gap: 48px; }
       .workflow-text { padding: 56px 40px; }
       .wf3-header { flex-direction: column; gap: 10px; }
@@ -1109,6 +1238,9 @@
       #hero h1 { font-size: 2.8rem; }
       .case-stats { flex-direction: column; gap: 20px; }
       .benefits-inner, .intel-intro, .results-inner, .team-inner { padding: 64px 24px; }
+      .team-header-block { margin-bottom: 40px; }
+      .team-cards { grid-template-columns: 1fr; gap: 16px; }
+      .tc-name { font-size: 22px; }
       .uc-grid { grid-template-columns: 1fr; }
       .workflow-section { grid-template-columns: 1fr; min-height: auto; }
       .workflow-section.flip { direction: ltr; }
@@ -1211,6 +1343,8 @@
       .result-card { padding: 28px 16px; }
 
       .team-inner { padding: 48px 20px; }
+      .tc-body { padding: 16px 16px 20px; }
+      .tc-name { font-size: 20px; }
 
       .footer-top { padding: 48px 20px; gap: 40px; }
       .footer-bottom { padding: 16px 20px; }
@@ -1689,13 +1823,86 @@
   <!-- ─── SECTION 6: TEAM ─── -->
   <section id="team">
     <div class="team-inner">
-      <div class="section-label">Our Core Team</div>
-      <h2 class="section-heading">The Minds Behind<br>the Platform.</h2>
-      <p class="section-sub">Engineers, operators, and founders who have built and scaled deep-tech AI products across security, enterprise software, and industrial operations.</p>
-      <img
-        src="../security/assets/Team/Untitled design (1).png"
-        alt="Yantra AI Labs — Rakesh, Rohit, Mohit"
-        class="team-img">
+
+      <div class="team-header-block">
+        <div class="section-label">Our Core Team</div>
+        <h2 class="section-heading">The Minds Behind<br>the Platform.</h2>
+        <p class="section-sub">Engineers and operators from <strong>NIT Rourkela</strong> and <strong>IIT Delhi</strong> — Hero Group, Zomato, EY, and Techstars-backed founders.</p>
+      </div>
+
+      <div class="team-cards">
+
+        <!-- Rakesh -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_1.png" alt="Rakesh — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Rakesh</div>
+            <div class="tc-tags">
+              <span class="tc-tag">AI</span>
+              <span class="tc-tag">ML</span>
+              <span class="tc-tag">Engineering</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '13 · <span class="hl-company">EY</span>, <span class="hl-company">AI Monk</span>, <span class="hl-company">Dvara E-diary</span> · <span class="metric">$2M raised</span>
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">NIT Rourkela</span>
+              <span class="tc-cred">Patented AI</span>
+              <span class="tc-cred">EY · AI Monk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rohit -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_2.png" alt="Rohit — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Rohit</div>
+            <div class="tc-tags">
+              <span class="tc-tag">Business</span>
+              <span class="tc-tag">GTM</span>
+              <span class="tc-tag">Product</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '12 · <span class="hl-company">Hero Group</span> · EasyLokal <span class="metric">~$100K (Techstars)</span> → <span class="hl-company">WayCool</span> · <span class="hl-company">Zomato</span> 1.5M txns/month
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">NIT Rourkela</span>
+              <span class="tc-cred">Techstars</span>
+              <span class="tc-cred">Hero · Zomato</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mohit -->
+        <div class="tc">
+          <div class="tc-photo">
+            <img src="../assets/Team/team_3.png" alt="Mohit — Co-founder, Yantra AI Labs">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Mohit</div>
+            <div class="tc-tags">
+              <span class="tc-tag">Strategy</span>
+              <span class="tc-tag">Business</span>
+              <span class="tc-tag">AI</span>
+            </div>
+            <p class="tc-bio">
+              B.Tech, <span class="hl-college">IIT Delhi</span> '12 · <span class="hl-company">Hero Group</span> <span class="metric">$200M+</span> · <span class="hl-company">Jangid Motors</span> <span class="metric">$5M ARR</span> · <span class="hl-company">Oye! Rickshaw</span> 100k+ txns/day, <span class="metric">$12M raised</span> (Matrix, Xiaomi)
+            </p>
+            <div class="tc-creds">
+              <span class="tc-cred amber">IIT Delhi</span>
+              <span class="tc-cred">Jangid Motors</span>
+              <span class="tc-cred">Oye Rickshaw</span>
+              <span class="tc-cred">Hero Group</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 

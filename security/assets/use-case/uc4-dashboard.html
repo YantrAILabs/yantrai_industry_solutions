@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yantrai Command — Security Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0A0A0A;
+      --dark: #141414;
+      --card: #1A1A1A;
+      --border: #2A2A2A;
+      --red: #E53935;
+      --green: #43A047;
+      --amber: #FFB300;
+      --blue: #1E88E5;
+      --text: #F5F5F5;
+      --muted: #9E9E9E;
+      --dim: #666666;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--dark);
+      flex-shrink: 0;
+    }
+    .hd-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hd-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: linear-gradient(135deg, var(--red) 0%, #B71C1C 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 13px; color: #fff;
+    }
+    .hd-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px; }
+    .hd-title span { color: var(--muted); font-weight: 400; }
+    .hd-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--dim); margin-top: 1px; }
+    .hd-right { display: flex; align-items: center; gap: 16px; }
+    .live-badge {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(229,57,53,0.12); border: 1px solid rgba(229,57,53,0.3);
+      border-radius: 6px;
+      font-size: 11px; font-weight: 600; color: var(--red);
+      animation: alertBlink 2s infinite;
+    }
+    .pulse-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 6px var(--green);
+    }
+    .hd-clock { text-align: right; }
+    .hd-clock .time { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+    .hd-clock .date { font-size: 9px; color: var(--dim); margin-top: 1px; }
+
+    /* TAB NAV */
+    nav {
+      display: flex; gap: 2px;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--dark);
+      flex-shrink: 0;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      background: transparent; border: none; cursor: pointer;
+      color: var(--dim);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--red); }
+    .tab-btn:hover:not(.active) { color: var(--muted); }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 20px;
+    }
+    main::-webkit-scrollbar { width: 3px; }
+    main::-webkit-scrollbar-track { background: var(--dark); }
+    main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* KPI ROW */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 8px 8px 0 0;
+    }
+    .kpi-label { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .kpi-val { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+    .kpi-unit { font-size: 10px; color: var(--muted); margin-left: 2px; }
+    .kpi-change { margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+    .kpi-badge { font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 3px; }
+    .kpi-badge.down { background: rgba(67,160,71,0.15); color: var(--green); }
+    .kpi-badge.up-bad { background: rgba(229,57,53,0.15); color: var(--red); }
+    .kpi-badge.up-good { background: rgba(67,160,71,0.15); color: var(--green); }
+    .kpi-cl { font-size: 9px; color: var(--dim); }
+
+    /* CHART CARDS */
+    .chart-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .cc-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .cc-sub { font-size: 9px; color: var(--dim); margin-bottom: 10px; }
+    canvas { display: block; }
+
+    /* PIE LEGEND */
+    .pie-legend { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+    .pie-leg-row { display: flex; align-items: center; justify-content: space-between; font-size: 10px; }
+    .pie-leg-dot { width: 7px; height: 7px; border-radius: 2px; margin-right: 6px; flex-shrink: 0; }
+    .pie-leg-left { display: flex; align-items: center; color: var(--muted); }
+    .pie-leg-val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+    /* CAMERA GRID */
+    .cam-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .cam-card {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cam-card.alert { border-color: rgba(229,57,53,0.4); animation: alertBlink 2s infinite; }
+    .cam-card.offline { border-color: rgba(229,57,53,0.2); }
+    .cam-id { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; }
+    .cam-zone { font-size: 9px; color: var(--dim); margin-top: 1px; }
+    .cam-status { display: flex; align-items: center; gap: 5px; }
+    .cam-alert-lbl { font-size: 8px; font-weight: 700; color: var(--red); }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .status-dot.online { background: var(--green); box-shadow: 0 0 5px var(--green); animation: pulse 2s infinite; }
+    .status-dot.offline { background: var(--red); box-shadow: 0 0 4px var(--red); }
+
+    /* EVENT TABLE */
+    .event-table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .et-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .et-head-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; }
+    .et-head-sub { font-size: 9px; color: var(--dim); margin-top: 1px; }
+    .et-badge { font-size: 9px; color: var(--muted); background: var(--dark); padding: 4px 10px; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 8px 12px; text-align: left; font-size: 9px;
+      color: var(--dim); font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 10px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.01); }
+    .sev-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .sev-dot.critical { background: var(--red); box-shadow: 0 0 5px var(--red); }
+    .sev-dot.medium { background: var(--amber); box-shadow: 0 0 4px var(--amber); }
+    .sev-dot.low { background: var(--green); box-shadow: 0 0 4px var(--green); }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+    .st-badge { font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .st-badge.escalated { background: rgba(229,57,53,0.15); color: var(--red); border: 1px solid rgba(229,57,53,0.3); }
+    .st-badge.auto { background: rgba(67,160,71,0.12); color: var(--green); border: 1px solid rgba(67,160,71,0.3); }
+    .st-badge.resolved { background: rgba(30,136,229,0.12); color: var(--blue); border: 1px solid rgba(30,136,229,0.3); }
+    .st-badge.monitored { background: rgba(255,179,0,0.12); color: var(--amber); border: 1px solid rgba(255,179,0,0.3); }
+    .action-cell { color: var(--muted); max-width: 180px; }
+
+    /* ANALYTICS */
+    .chart-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .scorecard {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 14px; margin-bottom: 12px;
+    }
+    .sc-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .sc-sub { font-size: 9px; color: var(--dim); margin-bottom: 12px; }
+    .sc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .sc-item {
+      background: var(--dark); border-radius: 7px; padding: 12px;
+      border: 1px solid var(--border);
+    }
+    .sc-label { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .sc-before { font-size: 10px; color: var(--dim); text-decoration: line-through; margin-bottom: 4px; }
+    .sc-after { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .sc-pill { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 3px; display: inline-block; }
+
+    .roi-row {
+      background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+      padding: 14px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    }
+    .roi-item { text-align: center; padding: 8px 12px; }
+    .roi-item:not(:last-child) { border-right: 1px solid var(--border); }
+    .roi-label { font-size: 9px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .roi-val { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 3px; }
+    .roi-sub { font-size: 9px; color: var(--muted); }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    @keyframes alertBlink { 0%,100%{border-color:rgba(229,57,53,0.3)} 50%{border-color:rgba(229,57,53,0.7)} }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="hd-brand">
+      <div class="hd-icon">Y</div>
+      <div>
+        <div class="hd-title">Yantrai <span>Command</span></div>
+        <div class="hd-sub">Vision AI Security Operations</div>
+      </div>
+    </div>
+    <div class="hd-right">
+      <div class="live-badge">
+        3 LIVE <span class="pulse-dot"></span>
+      </div>
+      <div class="hd-clock">
+        <div class="time" id="clock">--:--:--</div>
+        <div class="date" id="dateline">---</div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+    <button class="tab-btn" onclick="switchTab('actions', this)">Actions & Events</button>
+    <button class="tab-btn" onclick="switchTab('analytics', this)">Analytics & Trends</button>
+  </nav>
+
+  <main>
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-bar" style="background:var(--green)"></div>
+          <div class="kpi-label">Avg Response Time</div>
+          <div><span class="kpi-val">3.2</span><span class="kpi-unit">min</span></div>
+          <div class="kpi-change"><span class="kpi-badge down">↓ 77%</span><span class="kpi-cl">vs 6 months ago</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-bar" style="background:var(--blue)"></div>
+          <div class="kpi-label">False Alarms / mo</div>
+          <div><span class="kpi-val">8</span></div>
+          <div class="kpi-change"><span class="kpi-badge down">↓ 88%</span><span class="kpi-cl">from 68/mo baseline</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-bar" style="background:var(--amber)"></div>
+          <div class="kpi-label">Incidents This Month</div>
+          <div><span class="kpi-val">94</span></div>
+          <div class="kpi-change"><span class="kpi-badge down">↓ 50%</span><span class="kpi-cl">vs Oct baseline</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-bar" style="background:var(--red)"></div>
+          <div class="kpi-label">Camera Uptime</div>
+          <div><span class="kpi-val">99.4</span><span class="kpi-unit">%</span></div>
+          <div class="kpi-change"><span class="kpi-badge up-good">↑ 2.1%</span><span class="kpi-cl">since deployment</span></div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="cc-title">Incident Trend</div>
+          <div class="cc-sub">6-month improvement trajectory</div>
+          <canvas id="trendChart" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="cc-title">By Type</div>
+          <div class="cc-sub">Incident breakdown</div>
+          <canvas id="pieChart" height="110"></canvas>
+          <div class="pie-legend" id="pieLegend"></div>
+        </div>
+      </div>
+
+      <div class="cam-grid">
+        <div class="cam-card alert"><div><div class="cam-id">CAM-01</div><div class="cam-zone">Gate A</div></div><div class="cam-status"><span class="cam-alert-lbl">ALERT</span><span class="status-dot online"></span></div></div>
+        <div class="cam-card"><div><div class="cam-id">CAM-02</div><div class="cam-zone">Parking B1</div></div><div class="cam-status"><span class="status-dot online"></span></div></div>
+        <div class="cam-card"><div><div class="cam-id">CAM-03</div><div class="cam-zone">Lobby</div></div><div class="cam-status"><span class="status-dot online"></span></div></div>
+        <div class="cam-card alert"><div><div class="cam-id">CAM-04</div><div class="cam-zone">Perimeter E</div></div><div class="cam-status"><span class="cam-alert-lbl">ALERT</span><span class="status-dot online"></span></div></div>
+        <div class="cam-card"><div><div class="cam-id">CAM-05</div><div class="cam-zone">Server Rm</div></div><div class="cam-status"><span class="status-dot online"></span></div></div>
+        <div class="cam-card offline"><div><div class="cam-id">CAM-06</div><div class="cam-zone">Loading</div></div><div class="cam-status"><span class="status-dot offline"></span></div></div>
+        <div class="cam-card"><div><div class="cam-id">CAM-07</div><div class="cam-zone">Perimeter W</div></div><div class="cam-status"><span class="status-dot online"></span></div></div>
+        <div class="cam-card"><div><div class="cam-id">CAM-08</div><div class="cam-zone">Gate B</div></div><div class="cam-status"><span class="status-dot online"></span></div></div>
+      </div>
+    </div>
+
+    <!-- ACTIONS TAB -->
+    <div class="tab-panel" id="tab-actions">
+      <div class="event-table-wrap">
+        <div class="et-head">
+          <div>
+            <div class="et-head-title">Event Log — Actions Taken</div>
+            <div class="et-head-sub">Every AI decision documented with root cause</div>
+          </div>
+          <div class="et-badge">Today · 47 events processed</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th></th><th>Event ID</th><th>Time</th><th>Type</th><th>Zone</th><th>Status</th><th>Action Taken</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="sev-dot critical"></span></td><td class="mono">EVT-0947</td><td class="mono">14:32</td><td style="font-weight:600">Intrusion</td><td style="color:var(--muted)">Perimeter East</td><td><span class="st-badge escalated">Escalated</span></td><td class="action-cell">Guard dispatched + Door locked</td></tr>
+            <tr><td><span class="sev-dot low"></span></td><td class="mono">EVT-0946</td><td class="mono">14:18</td><td style="font-weight:600">Tailgating</td><td style="color:var(--muted)">Gate A Main</td><td><span class="st-badge auto">Auto-cleared</span></td><td class="action-cell">Badge verified — authorized employee</td></tr>
+            <tr><td><span class="sev-dot medium"></span></td><td class="mono">EVT-0945</td><td class="mono">13:55</td><td style="font-weight:600">Loitering</td><td style="color:var(--muted)">Parking B2</td><td><span class="st-badge resolved">Resolved</span></td><td class="action-cell">PA announcement triggered</td></tr>
+            <tr><td><span class="sev-dot medium"></span></td><td class="mono">EVT-0944</td><td class="mono">13:41</td><td style="font-weight:600">DFO Alert</td><td style="color:var(--muted)">Server Room</td><td><span class="st-badge escalated">Escalated</span></td><td class="action-cell">Root cause: sensor fault → Ticket created</td></tr>
+            <tr><td><span class="sev-dot low"></span></td><td class="mono">EVT-0943</td><td class="mono">13:22</td><td style="font-weight:600">False Alarm</td><td style="color:var(--muted)">Loading Dock</td><td><span class="st-badge auto">Auto-cleared</span></td><td class="action-cell">AI classified: wind + debris</td></tr>
+            <tr><td><span class="sev-dot medium"></span></td><td class="mono">EVT-0942</td><td class="mono">12:58</td><td style="font-weight:600">Crowd</td><td style="color:var(--muted)">Lobby Main</td><td><span class="st-badge monitored">Monitored</span></td><td class="action-cell">Occupancy threshold — staff notified</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-card">
+        <div class="cc-title">Zone Performance</div>
+        <div class="cc-sub">Alerts vs resolved by zone</div>
+        <canvas id="zoneChart" height="110"></canvas>
+      </div>
+    </div>
+
+    <!-- ANALYTICS TAB -->
+    <div class="tab-panel" id="tab-analytics">
+      <div class="scorecard">
+        <div class="sc-title">6-Month Improvement Scorecard</div>
+        <div class="sc-sub">AI-driven improvements since Yantrai deployment — Oct 2025 to Mar 2026</div>
+        <div class="sc-grid">
+          <div class="sc-item">
+            <div class="sc-label">Response Time</div>
+            <div class="sc-before">14.2 min</div>
+            <div class="sc-after">3.2 min</div>
+            <span class="sc-pill" style="background:rgba(67,160,71,0.15);color:var(--green)">77% faster</span>
+          </div>
+          <div class="sc-item">
+            <div class="sc-label">False Alarms / mo</div>
+            <div class="sc-before">68</div>
+            <div class="sc-after">8</div>
+            <span class="sc-pill" style="background:rgba(30,136,229,0.15);color:var(--blue)">88% reduction</span>
+          </div>
+          <div class="sc-item">
+            <div class="sc-label">Incident Volume</div>
+            <div class="sc-before">187 / mo</div>
+            <div class="sc-after">94 / mo</div>
+            <span class="sc-pill" style="background:rgba(255,179,0,0.15);color:var(--amber)">50% fewer</span>
+          </div>
+          <div class="sc-item">
+            <div class="sc-label">Resolution Rate</div>
+            <div class="sc-before">92%</div>
+            <div class="sc-after">100%</div>
+            <span class="sc-pill" style="background:rgba(229,57,53,0.15);color:var(--red)">Full coverage</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-2col">
+        <div class="chart-card">
+          <div class="cc-title">Response Time Trend</div>
+          <div class="cc-sub">Minutes from detection to action</div>
+          <canvas id="responseChart" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="cc-title">False Alarm Reduction</div>
+          <div class="cc-sub">AI filtering accuracy improvement</div>
+          <canvas id="falseChart" height="120"></canvas>
+        </div>
+      </div>
+
+      <div class="roi-row">
+        <div class="roi-item">
+          <div class="roi-label">Guard Hours Saved / Month</div>
+          <div class="roi-val" style="color:var(--green)">420</div>
+          <div class="roi-sub">hrs of manual monitoring eliminated</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-label">Estimated Monthly Savings</div>
+          <div class="roi-val" style="color:var(--amber)">₹8.4L</div>
+          <div class="roi-sub">reduced manpower + faster resolution</div>
+        </div>
+        <div class="roi-item">
+          <div class="roi-label">Cameras Under AI Watch</div>
+          <div class="roi-val" style="color:var(--red)">128</div>
+          <div class="roi-sub">across 6 zones · 24/7 coverage</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString('en-IN', { hour12: false });
+      document.getElementById('dateline').textContent = now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Tab switching
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Chart defaults
+    Chart.defaults.color = '#9E9E9E';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size = 9;
+
+    const months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+    const incidents = [187, 165, 143, 128, 112, 94];
+    const resolved = [172, 158, 139, 126, 111, 94];
+
+    // Trend chart
+    const trendCtx = document.getElementById('trendChart').getContext('2d');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [
+          {
+            label: 'Incidents',
+            data: incidents,
+            borderColor: '#E53935',
+            backgroundColor: 'rgba(229,57,53,0.12)',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 2,
+          },
+          {
+            label: 'Resolved',
+            data: resolved,
+            borderColor: '#43A047',
+            backgroundColor: 'rgba(67,160,71,0.08)',
+            borderWidth: 1.5,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 2,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true, labels: { boxWidth: 8, font: { size: 9 } } } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } }
+        }
+      }
+    });
+
+    // Pie chart
+    const pieData = [
+      { name: 'Intrusion', value: 32, color: '#E53935' },
+      { name: 'Tailgating', value: 24, color: '#FFB300' },
+      { name: 'Loitering', value: 18, color: '#1E88E5' },
+      { name: 'Perimeter', value: 14, color: '#7E57C2' },
+      { name: 'Other', value: 6, color: '#666' },
+    ];
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+      type: 'doughnut',
+      data: {
+        labels: pieData.map(d => d.name),
+        datasets: [{ data: pieData.map(d => d.value), backgroundColor: pieData.map(d => d.color), borderWidth: 0 }]
+      },
+      options: {
+        responsive: true,
+        cutout: '65%',
+        plugins: { legend: { display: false } },
+      }
+    });
+    // Legend
+    const legEl = document.getElementById('pieLegend');
+    pieData.forEach(d => {
+      legEl.innerHTML += `<div class="pie-leg-row"><div class="pie-leg-left"><span class="pie-leg-dot" style="background:${d.color}"></span>${d.name}</div><span class="pie-leg-val">${d.value}</span></div>`;
+    });
+
+    // Zone chart
+    const zoneCtx = document.getElementById('zoneChart').getContext('2d');
+    new Chart(zoneCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Gate A', 'Parking', 'Lobby', 'Server Rm', 'Perimeter', 'Loading'],
+        datasets: [
+          { label: 'Alerts', data: [28, 34, 12, 8, 42, 19], backgroundColor: '#E53935', borderRadius: 3, barThickness: 14 },
+          { label: 'Resolved', data: [28, 32, 12, 8, 41, 18], backgroundColor: '#43A047', borderRadius: 3, barThickness: 14 },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true, labels: { boxWidth: 8, font: { size: 9 } } } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } }
+        }
+      }
+    });
+
+    // Response time chart
+    const respCtx = document.getElementById('responseChart').getContext('2d');
+    new Chart(respCtx, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [{
+          label: 'Response Time (min)',
+          data: [14.2, 11.8, 9.1, 7.4, 5.8, 3.2],
+          borderColor: '#43A047',
+          backgroundColor: 'rgba(67,160,71,0.1)',
+          borderWidth: 1.5,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 }, callback: v => v + ' min' } }
+        }
+      }
+    });
+
+    // False alarm chart
+    const falseCtx = document.getElementById('falseChart').getContext('2d');
+    new Chart(falseCtx, {
+      type: 'bar',
+      data: {
+        labels: months,
+        datasets: [{
+          label: 'False Alarms',
+          data: [68, 52, 38, 24, 15, 8],
+          backgroundColor: '#1E88E5',
+          borderRadius: 3,
+          barThickness: 20,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 9 } } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

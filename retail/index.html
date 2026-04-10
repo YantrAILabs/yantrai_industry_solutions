@@ -47,6 +47,41 @@
       padding: 10px 24px; border-radius: 50px; transition: opacity 0.2s;
     }
     .nav-cta:hover { opacity: 0.85; }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    /* ─── BURGER MENU ─── */
+    .burger-btn {
+      width: 36px; height: 36px; cursor: pointer;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 5px; background: none; border: 1px solid var(--border);
+      border-radius: 8px; padding: 0; transition: border-color 0.2s;
+    }
+    .burger-btn:hover { border-color: var(--blue); }
+    .burger-btn span {
+      display: block; width: 16px; height: 1.5px;
+      background: var(--dark); border-radius: 1px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .burger-btn.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .burger-btn.active span:nth-child(2) { opacity: 0; }
+    .burger-btn.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .burger-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 99; display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .burger-overlay.open { opacity: 1; pointer-events: auto; }
+    .burger-overlay a {
+      font-family: 'Sora', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700; color: var(--dark); text-decoration: none;
+      padding: 12px 0; letter-spacing: -0.01em;
+      transition: color 0.2s;
+    }
+    .burger-overlay a:hover { color: var(--blue); }
 
     /* ─── SECTION 1: HERO ─── */
     .hero { padding: 140px 60px 120px; text-align: center; background: var(--bg); }
@@ -511,6 +546,7 @@
     @media (max-width: 480px) {
       .tr-inner { padding: 56px 20px; }
     }
+
   </style>
 </head>
 <body>
@@ -518,8 +554,26 @@
   <!-- NAV -->
   <nav>
     <a href="/" class="nav-wordmark">Yantr<span>AI</span> Labs</a>
-    <a href="contact.html" class="nav-cta">Request Demo</a>
+    <div class="nav-right">
+      <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="contact.html" class="nav-cta">Request Demo</a>
+    </div>
   </nav>
+
+  <!-- BURGER OVERLAY -->
+  <div class="burger-overlay" id="burgerOverlay">
+    <a href="#platform" data-burger>Platform</a>
+    <a href="#intelligence" data-burger>How It Works</a>
+    <a href="#implementation" data-burger>Deployment</a>
+    <a href="#partners" data-burger>Compatibility</a>
+    <a href="#usecases" data-burger>Use Cases</a>
+    <a href="#results" data-burger>Results</a>
+    <a href="#team" data-burger>Team</a>
+    <a href="#track-record" data-burger>Track Record</a>
+    <a href="#contact" data-burger>Contact</a>
+  </div>
 
   <!-- SECTION 1: HERO -->
   <section class="hero">
@@ -882,16 +936,14 @@
       <div class="team-header-block">
         <div class="section-label">Our Core Team</div>
         <h2 class="section-heading">The Minds Behind<br>the Platform.</h2>
-        <p class="section-sub">
-          Engineers and operators from <strong>IIT Delhi</strong>, <strong>NIT Rourkela</strong> — Hero Group, Zomato, EY — who've built and scaled products across consumer and enterprise and are now applying AI to make physical operations truly intelligent.
-        </p>
+        <p class="section-sub">Engineers and operators from <strong>IIT Delhi</strong>, <strong>NIT Rourkela</strong> — Hero Group, Zomato, EY — who've lived the complexity of large-scale industrial ops and are now building multimodal AI that makes organisations truly intelligent.</p>
       </div>
       <div class="team-cards">
 
         <!-- Rakesh -->
         <div class="tc">
           <div class="tc-photo">
-            <img src="../assets/Team/team_1.png" alt="Rakesh — Co-founder, Yantra AI Labs" onerror="this.parentElement.style.background='var(--bg-card)';this.style.display='none'">
+            <img src="../assets/Team/team_1.png" alt="Rakesh — Co-founder, Yantra AI Labs">
           </div>
           <div class="tc-body">
             <div class="tc-name">Rakesh</div>
@@ -901,14 +953,12 @@
               <span class="tc-tag">Engineering</span>
             </div>
             <p class="tc-bio">
-              B.Tech, <span class="hl-college">NIT Rourkela</span> '13 &nbsp;·&nbsp;
-              <span class="hl-company">EY</span> ,&nbsp; <span class="hl-company">AI Monk</span> ,&nbsp;
-              <span class="hl-company">Dvara E-diary</span> &nbsp;·&nbsp; <span class="metric">$2M raised</span>
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '13 · <span class="hl-company">EY</span>, <span class="hl-company">AI Monk</span>, <span class="hl-company">Dvara E-diary</span> · <span class="metric">$2M raised</span>
             </p>
             <div class="tc-creds">
-              <span class="tc-cred">NIT Rourkela</span>
+              <span class="tc-cred amber">NIT Rourkela</span>
               <span class="tc-cred">Patented AI</span>
-              <span class="tc-cred amber">EY · AI Monk</span>
+              <span class="tc-cred">EY · AI Monk</span>
             </div>
           </div>
         </div>
@@ -916,24 +966,22 @@
         <!-- Rohit -->
         <div class="tc">
           <div class="tc-photo">
-            <img src="../assets/Team/team_2.png" alt="Rohit — Co-founder, Yantra AI Labs" onerror="this.parentElement.style.background='var(--bg-card)';this.style.display='none'">
+            <img src="../assets/Team/team_2.png" alt="Rohit — Co-founder, Yantra AI Labs">
           </div>
           <div class="tc-body">
             <div class="tc-name">Rohit</div>
             <div class="tc-tags">
-              <span class="tc-tag">Product</span>
+              <span class="tc-tag">Business</span>
               <span class="tc-tag">GTM</span>
-              <span class="tc-tag">Strategy</span>
+              <span class="tc-tag">Product</span>
             </div>
             <p class="tc-bio">
-              MBA, <span class="hl-college">IIM Indore</span> &nbsp;·&nbsp;
-              <span class="hl-company">Hero Group</span> ,&nbsp; <span class="hl-company">Zomato</span> ,&nbsp;
-              <span class="hl-company">Rapido</span> &nbsp;·&nbsp; <span class="metric">₹500Cr+ managed</span>
+              B.Tech, <span class="hl-college">NIT Rourkela</span> '12 · <span class="hl-company">Hero Group</span> · EasyLokal <span class="metric">~$100K (Techstars)</span> → <span class="hl-company">WayCool</span> · <span class="hl-company">Zomato</span> 1.5M txns/month
             </p>
             <div class="tc-creds">
-              <span class="tc-cred">IIM Indore</span>
-              <span class="tc-cred">Hero Group</span>
-              <span class="tc-cred amber">Zomato · Rapido</span>
+              <span class="tc-cred amber">NIT Rourkela</span>
+              <span class="tc-cred">Techstars</span>
+              <span class="tc-cred">Hero · Zomato</span>
             </div>
           </div>
         </div>
@@ -941,24 +989,23 @@
         <!-- Mohit -->
         <div class="tc">
           <div class="tc-photo">
-            <img src="../assets/Team/team_3.png" alt="Mohit — Co-founder, Yantra AI Labs" onerror="this.parentElement.style.background='var(--bg-card)';this.style.display='none'">
+            <img src="../assets/Team/team_3.png" alt="Mohit — Co-founder, Yantra AI Labs">
           </div>
           <div class="tc-body">
             <div class="tc-name">Mohit</div>
             <div class="tc-tags">
-              <span class="tc-tag">Design</span>
-              <span class="tc-tag">Systems</span>
-              <span class="tc-tag">UX</span>
+              <span class="tc-tag">Strategy</span>
+              <span class="tc-tag">Business</span>
+              <span class="tc-tag">AI</span>
             </div>
             <p class="tc-bio">
-              B.Tech, <span class="hl-college">IIT Delhi</span> &nbsp;·&nbsp;
-              <span class="hl-company">EY</span> ,&nbsp; <span class="hl-company">Deloitte</span> &nbsp;·&nbsp;
-              <span class="metric">10+ enterprise products</span>
+              B.Tech, <span class="hl-college">IIT Delhi</span> '12 · <span class="hl-company">Hero Group</span> <span class="metric">$200M+</span> · <span class="hl-company">Jangid Motors</span> <span class="metric">$5M ARR</span> · <span class="hl-company">Oye! Rickshaw</span> 100k+ txns/day, <span class="metric">$12M raised</span> (Matrix, Xiaomi)
             </p>
             <div class="tc-creds">
-              <span class="tc-cred">IIT Delhi</span>
-              <span class="tc-cred">EY · Deloitte</span>
-              <span class="tc-cred amber">Enterprise UX</span>
+              <span class="tc-cred amber">IIT Delhi</span>
+              <span class="tc-cred">Jangid Motors</span>
+              <span class="tc-cred">Oye Rickshaw</span>
+              <span class="tc-cred">Hero Group</span>
             </div>
           </div>
         </div>
@@ -1173,6 +1220,27 @@
         });
       }, { threshold: 0.15 });
       cards.forEach(function(card) { observer.observe(card); });
+    })();
+
+    /* Burger Menu */
+    (function() {
+      var btn = document.getElementById('burgerBtn');
+      var overlay = document.getElementById('burgerOverlay');
+      btn.addEventListener('click', function() {
+        btn.classList.toggle('active');
+        overlay.classList.toggle('open');
+        document.body.style.overflow = overlay.classList.contains('open') ? 'hidden' : '';
+      });
+      overlay.querySelectorAll('a[data-burger]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          btn.classList.remove('active');
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
     })();
   </script>
 
